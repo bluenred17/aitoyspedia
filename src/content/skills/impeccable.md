@@ -6,7 +6,7 @@ tags: [desain, ui, review, detektor]
 surfaces: [claude-code]
 source_url: "https://github.com/pbakaus/impeccable/blob/main/README.md"
 repo: pbakaus/impeccable
-stars: 102143
+stars: 102187
 license: Apache-2.0
 added: 2026-11-04
 last_verified: 2026-11-04

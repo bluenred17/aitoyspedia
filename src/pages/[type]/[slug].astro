@@ -54,7 +54,9 @@ const copyText = getCopyText(item.type, data as Record<string, unknown>);
       </div>
     )}
 
-    <article class="prose prose-slate mt-8 max-w-none break-words [&_img]:max-w-full [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto">
+    <article
+      class="prose prose-slate mt-8 max-w-none break-words [&_img]:max-w-full [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto [&_:not(pre)>code]:rounded [&_:not(pre)>code]:bg-slate-100 [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:before:content-none [&_:not(pre)>code]:after:content-none"
+    >
       <Content />
     </article>
 

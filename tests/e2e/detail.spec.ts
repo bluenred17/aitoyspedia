@@ -16,7 +16,8 @@ test('detail shows install, source and verification date', async ({ page }) => {
   await expect(page.getByRole('link', { name: /sumber/i })).toHaveAttribute('href', /github\.com\/lemomo-ai/);
   await expect(page.getByText(/Terakhir dicek/)).toBeVisible();
   await expect(page.getByText('4 November 2026')).toBeVisible();
-  await expect(page.getByText('MIT')).toBeVisible();
+  // Dibatasi ke sel metadata: kata "MIT" juga muncul di isi README yang diterjemahkan.
+  await expect(page.locator('dd', { hasText: /^MIT/ })).toBeVisible();
 });
 
 test('copy keeps multi-line commands', async ({ page }) => {
