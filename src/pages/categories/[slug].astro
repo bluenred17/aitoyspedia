@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { CATEGORIES } from '../../data/categories';
+import { getAllEntries } from '../../lib/entries';
+
+export function getStaticPaths() {
+  return CATEGORIES.map((category) => ({ params: { slug: category.slug }, props: { category } }));
+}
+
+const { category } = Astro.props;
+const entries = (await getAllEntries()).filter((e) => e.data.category === category.slug);
+---
+
+<Base title={category.label}>
+  <p class="text-sm"><a href="/categories/" class="text-indigo-600 hover:underline">← Semua kategori</a></p>
+  <h1 class="mt-1 text-3xl font-bold">{category.label}</h1>
+  {entries.length === 0 ? (
+    <p class="mt-4 text-gray-500">Belum ada entri di kategori ini.</p>
+  ) : (
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {entries.map((entry) => <EntryCard entry={entry} />)}
+    </div>
+  )}
+</Base>

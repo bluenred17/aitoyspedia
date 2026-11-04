@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import CategoryFilter from '../../components/CategoryFilter.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { ENTRY_TYPES, type EntryType } from '../../data/entry-types';
+import { getEntriesByType } from '../../lib/entries';
+
+export function getStaticPaths() {
+  return ENTRY_TYPES.map((type) => ({ params: { type: type.key }, props: { type } }));
+}
+
+const { type } = Astro.props as { type: EntryType };
+const entries = await getEntriesByType(type.key);
+---
+
+<Base title={type.label}>
+  <h1 class="text-3xl font-bold">{type.label}</h1>
+  {entries.length === 0 ? (
+    <p class="mt-4 text-gray-500">Belum ada {type.singular}.</p>
+  ) : (
+    <>
+      <div class="mt-4"><CategoryFilter /></div>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {entries.map((entry) => <EntryCard entry={entry} />)}
+      </div>
+    </>
+  )}
+</Base>

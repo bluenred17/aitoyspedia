@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import EntryCard from '../components/EntryCard.astro';
+import { CATEGORIES } from '../data/categories';
+import { ENTRY_TYPES } from '../data/entry-types';
+import { countByCategory, getAllEntries, getEntriesByType } from '../lib/entries';
+
+const all = await getAllEntries();
+const counts = countByCategory(all);
+// Hanya kategori yang punya entri, yang terbanyak lebih dulu, maksimal delapan.
+const topCategories = CATEGORIES.map((c) => ({ ...c, count: counts.get(c.slug) ?? 0 }))
+  .filter((c) => c.count > 0)
+  .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
+  .slice(0, 8);
+const sections = await Promise.all(
+  ENTRY_TYPES.map(async (type) => ({ type, entries: (await getEntriesByType(type.key)).slice(0, 4) })),
+);
+---
+
+<Base>
+  <section class="rounded-2xl bg-linear-to-br from-indigo-600 to-purple-700 px-6 py-10 text-white">
+    <h1 class="text-3xl font-bold sm:text-4xl">Ensiklopedia Prompt &amp; Tools AI</h1>
+    <p class="mt-2 max-w-2xl text-indigo-100">
+      Kumpulan prompt, tools, skills, plugins, dan connectors untuk Claude, dikelompokkan per kategori.
+    </p>
+  </section>
+
+  <section class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Kategori">
+    {topCategories.map((c) => (
+      <a
+        href={`/categories/${c.slug}/`}
+        class="rounded-xl border border-gray-200 bg-white px-3 py-3 text-center font-semibold hover:border-indigo-300"
+      >
+        {c.label}
+        <span class="block text-sm font-normal text-gray-500">{c.count} item</span>
+      </a>
+    ))}
+  </section>
+  <p class="mt-2 text-right text-sm">
+    <a href="/categories/" class="text-indigo-600 hover:underline">Semua kategori →</a>
+  </p>
+
+  {sections.map(({ type, entries }) => (
+    <section class="mt-8">
+      <div class="mb-3 flex items-baseline justify-between">
+        <h2 class="text-xl font-bold">{type.label} Terbaru</h2>
+        <a href={`/${type.key}/`} class="text-sm text-indigo-600 hover:underline">Lihat semua →</a>
+      </div>
+      {entries.length === 0 ? (
+        <p class="text-gray-500">Belum ada {type.singular}.</p>
+      ) : (
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {entries.map((entry) => <EntryCard entry={entry} />)}
+        </div>
+      )}
+    </section>
+  ))}
+</Base>
