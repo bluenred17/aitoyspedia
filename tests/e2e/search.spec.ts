@@ -42,9 +42,26 @@ test('clearing the box hides the results', async ({ page }) => {
   await expect(page.locator('[data-result-url]')).toHaveCount(0);
 });
 
-test('results are text, not markup', async ({ page }) => {
+test('results are rendered as text, never as markup', async ({ page }) => {
+  // Pagefind digantikan modul palsu supaya hasilnya deterministik dan memuat markup.
+  const evil = '<img src=x onerror=window.__pwned=1>';
+  await page.route('**/pagefind/pagefind.js', (route) =>
+    route.fulfill({
+      contentType: 'text/javascript',
+      body: `export async function search() {
+        return { results: [{ data: async () => ({
+          url: '/skills/x/',
+          meta: { title: ${JSON.stringify(evil)}, summary: '<b>tebal</b>', type: '<i>Skills</i>' },
+        }) }] };
+      }`,
+    }),
+  );
   await page.goto('/');
-  await page.getByRole('searchbox').fill('<img src=x onerror=window.__pwned=1>');
-  await expect(page.getByText('Tidak ada hasil.')).toBeVisible();
+  await page.getByRole('searchbox').fill('apa saja');
+
+  const result = page.locator('[data-result-url]');
+  await expect(result).toContainText(evil);
+  await expect(result).toContainText('<b>tebal</b>');
+  await expect(result.locator('img, b, i')).toHaveCount(0);
   expect(await page.evaluate(() => (window as unknown as { __pwned?: number }).__pwned)).toBeUndefined();
 });
