@@ -6,7 +6,7 @@ tags: [memori, konteks]
 surfaces: [claude-code]
 source_url: "https://github.com/thedotmack/claude-mem/blob/main/README.md"
 repo: thedotmack/claude-mem
-stars: 112499
+stars: 112504
 license: Apache-2.0
 added: 2026-11-04
 last_verified: 2026-11-04

@@ -6,7 +6,7 @@ tags: [film, animasi]
 surfaces: [claude-code]
 source_url: "https://github.com/lemomo-ai/lemo-opuscar/blob/main/README.md"
 repo: lemomo-ai/lemo-opuscar
-stars: 12103
+stars: 12106
 license: MIT
 added: 2026-11-04
 last_verified: 2026-11-04
