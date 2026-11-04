@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { CATEGORY_SLUGS } from './data/categories';
+import { httpsUrl } from './lib/https-url';
 
 const surfaces = z.enum(['claude-ai', 'claude-code', 'desktop', 'api']);
 
@@ -21,7 +22,7 @@ const common = {
 
 // Entri dari repo wajib punya sumber dan lisensi. Prompt boleh berasal dari catatan sendiri.
 const sourced = {
-  source_url: z.string().url(),
+  source_url: httpsUrl,
   license: z.string().nullable(),
 };
 
@@ -34,7 +35,7 @@ const collection = (dir: string, shape: z.ZodRawShape) =>
 export const collections = {
   prompts: collection('prompts', {
     ...common,
-    source_url: z.string().url().optional(),
+    source_url: httpsUrl.optional(),
     license: z.string().nullable().optional(),
     prompt: z.string().min(1),
     variables: z.array(z.string()).default([]),

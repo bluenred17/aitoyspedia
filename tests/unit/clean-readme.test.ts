@@ -12,3 +12,16 @@ test('drops a TOC in Indonesian', () =>
 test('keeps code', () => expect(cleanReadme('```\n[![a](b)](c)\n```')).toContain('[![a](b)](c)'));
 test('keeps a heading that only looks like a TOC inside code', () =>
   expect(cleanReadme('```\n## Contents\nx\n```\nsisa')).toContain('## Contents'));
+
+test('a TOC under a top-level heading does not swallow the sections after it', () =>
+  expect(cleanReadme('# Tool\n\n# Table of Contents\n- [a](#a)\n\n## Install\nnpx x')).toBe('# Tool\n\n## Install\nnpx x'));
+test('a TOC does not swallow a deeper heading that follows it', () =>
+  expect(cleanReadme('# Tool\n\n## Contents\n- [a](#a)\n\n### Install\nnpx x')).toBe('# Tool\n\n### Install\nnpx x'));
+test('a TOC ends at the first non-list paragraph', () =>
+  expect(cleanReadme('# T\n\n## Contents\n- [a](#a)\n- [b](#b)\n\nIni paragraf penting.\n\n## B\nisi')).toBe(
+    '# T\n\nIni paragraf penting.\n\n## B\nisi',
+  ));
+test('a tilde line inside a backtick fence does not end the fence', () =>
+  expect(cleanReadme('```\n~~~\n## Contents\nx\n```\nsisa')).toBe('```\n~~~\n## Contents\nx\n```\nsisa'));
+test('numbered list items stay part of the TOC', () =>
+  expect(cleanReadme('# T\n\n## Table of Contents\n1. [a](#a)\n2. [b](#b)\n\n## A\nisi')).toBe('# T\n\n## A\nisi'));

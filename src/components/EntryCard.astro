@@ -1,7 +1,7 @@
 ---
 import { getCategoryLabel } from '../data/categories';
 import { getEntryType } from '../data/entry-types';
-import { getCopyText } from '../lib/copy-text';
+import { getCopyText, needsShellWarning } from '../lib/copy-text';
 import { formatStars } from '../lib/format';
 import type { Entry } from '../lib/entries';
 import CopyButton from './CopyButton.astro';
@@ -35,8 +35,13 @@ const copyLabel = getEntryType(entry.type)?.copyLabel ?? 'Salin';
     )}
   </h3>
   <p class="mt-1 flex-1 text-sm text-gray-600">{data.summary}</p>
-  <div class="mt-3 flex items-center justify-between gap-2 text-xs text-gray-500">
+  <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-500">
     <span class="min-w-0 truncate">{data.repo ?? ''}</span>
+    {needsShellWarning(copyText) && (
+      <span class="font-medium text-amber-700" title="Perintah ini mengunduh skrip lalu langsung menjalankannya">
+        ⚠ Baca skripnya dulu
+      </span>
+    )}
     {copyText && <CopyButton text={copyText} label={copyLabel} />}
   </div>
 </article>

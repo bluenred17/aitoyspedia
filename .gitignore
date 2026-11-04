@@ -6,3 +6,7 @@ dist/
 .env.*
 test-results/
 playwright-report/
+pre.txt
+deploy_key*
+*.pem
+known_hosts*

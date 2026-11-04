@@ -78,7 +78,7 @@ describe('nginx reference config', () => {
   const conf = read('deploy/nginx-ai-encyclopedia.conf');
 
   test('serves the current release with clean-URL fallbacks', () => {
-    expect(conf).toContain('root /var/www/ai-encyclopedia/current');
+    expect(conf).toContain('root /var/www/ai-encyclopedia-site/current');
     expect(conf).toContain('try_files $uri $uri/ $uri.html =404');
     expect(conf).toContain('error_page 404 /404.html');
   });
@@ -94,5 +94,54 @@ describe('nginx reference config', () => {
 
   test('does not proxy to the old Express app', () => {
     expect(conf).not.toContain('proxy_pass');
+  });
+
+  const active = conf.split('\n').filter((l) => !l.trim().startsWith('#'));
+
+  test('is a dedicated server block for ai.toyspedia.fun only, never the names it shares with other sites', () => {
+    const names = active.filter((l) => /server_name/.test(l)).map((l) => l.trim());
+    expect(names).toEqual(['server_name ai.toyspedia.fun;', 'server_name ai.toyspedia.fun;']);
+    for (const other of ['aipedia.toyspedia.fun', 'www.toyspedia.fun']) expect(active.join('\n')).not.toContain(other);
+  });
+
+  test('reuses the existing certificate and does not repeat ipv6only, which makes nginx -t fail', () => {
+    const text = active.join('\n');
+    expect(text).toContain('listen 443 ssl;');
+    expect(text).toContain('listen [::]:443 ssl;');
+    expect(text).toContain('ssl_certificate /etc/letsencrypt/live/ai.toyspedia.fun/fullchain.pem;');
+    expect(text).toContain('ssl_certificate_key /etc/letsencrypt/live/ai.toyspedia.fun/privkey.pem;');
+    expect(active.filter((l) => /ipv6only/.test(l))).toEqual([]);
+  });
+
+  test('redirects plain http for this host to https', () => {
+    expect(active.join('\n')).toContain('return 301 https://$host$request_uri;');
+  });
+});
+
+describe('cutover guide', () => {
+  const guide = read('docs/cutover.md');
+
+  test('knows the old server block is shared and has to be split, not replaced', () => {
+    expect(guide).toContain('aipedia.toyspedia.fun');
+    expect(guide).toContain('ipv6only');
+    expect(guide).toMatch(/jangan (menghentikan|mematikan|stop)/i);
+  });
+
+  test('uses a directory that cannot collide with the old ai-encyclopedia service', () => {
+    expect(guide).toContain('/var/www/ai-encyclopedia-site');
+    expect(guide).not.toMatch(/\/var\/www\/ai-encyclopedia(?!-site)/);
+    expect(guide).toContain('systemctl cat ai-encyclopedia.service');
+  });
+
+  test('does not write backups under /root, where a non-root sudo user cannot', () => {
+    expect(guide).not.toContain('/root/backup');
+  });
+
+  test('does not read a key file on the server that was generated on the maintainer machine', () => {
+    expect(guide).not.toMatch(/cat deploy_key\.pub/);
+  });
+
+  test('makes authorized_keys and its directory root-owned', () => {
+    expect(guide).toContain('chown root:root /home/deploy/.ssh');
   });
 });

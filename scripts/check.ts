@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import matter from 'gray-matter';
+import { scanUnsafeHtml } from './lib/scan-html';
 import { scanText } from './lib/scan-secrets';
 import { findBrokenRelated } from './lib/validate-related';
 
@@ -17,6 +18,10 @@ for (const f of files) {
   const rel = relative(process.cwd(), join(ROOT, f)).split(sep).join('/');
   for (const hit of scanText(raw)) {
     console.error(`${rel}:${hit.line} pola mirip kunci rahasia (${hit.pattern})`);
+    problems++;
+  }
+  for (const hit of scanUnsafeHtml(raw)) {
+    console.error(`${rel}:${hit.line} HTML atau URL yang bisa menjalankan skrip (${hit.pattern})`);
     problems++;
   }
   const id = f.split(sep).join('/').replace(/\.md$/, '');

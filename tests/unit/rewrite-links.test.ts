@@ -37,3 +37,8 @@ test('root-relative link resolves against the repo root', () =>
   expect(R('[x](/docs/a.md)')).toBe('[x](https://github.com/a/b/blob/main/docs/a.md)'));
 test('root-relative image resolves against the raw repo root', () =>
   expect(R('![x](/img/a.png)')).toBe('![x](https://raw.githubusercontent.com/a/b/main/img/a.png)'));
+
+test('a mid-line triple backtick does not stop later links from being rewritten', () =>
+  expect(R('teks ``` sebaris\n[x](./after.md)')).toBe(
+    'teks ``` sebaris\n[x](https://github.com/a/b/blob/main/sub/after.md)',
+  ));

@@ -214,10 +214,10 @@ Push ke `main` menjalankan GitHub Actions:
 3. `npm test`
 4. `npm run build` (Astro dan Pagefind)
 5. Tes Playwright terhadap hasil build
-6. `rsync` ke `/var/www/ai-encyclopedia/releases/<sha>/` lewat SSH
-7. Mengganti symlink `/var/www/ai-encyclopedia/current` ke rilis baru
+6. `rsync` ke `/var/www/ai-encyclopedia-site/releases/<sha>/` lewat SSH
+7. Mengganti symlink `/var/www/ai-encyclopedia-site/current` ke rilis baru
 
-Workflow memakai pengguna deploy khusus dan kunci SSH khusus, yang disimpan di GitHub Secrets. Kunci ini hanya boleh menulis ke `/var/www/ai-encyclopedia`. Tiga rilis terakhir disimpan untuk rollback.
+Workflow memakai pengguna deploy khusus dan kunci SSH khusus, yang disimpan di GitHub Secrets. Kunci ini hanya boleh menulis ke `/var/www/ai-encyclopedia-site`. Tiga rilis terakhir disimpan untuk rollback.
 
 ### Prasyarat dari pengelola
 
@@ -231,9 +231,9 @@ Pengelola menjalankan langkah berikut di server, dan Claude menyiapkan perintahn
 
 1. Backup database aplikasi Express dan konfigurasi nginx.
 2. Catat proses lain di server, supaya hanya blok `ai.toyspedia.fun` yang berubah.
-3. Deploy situs baru ke `/var/www/ai-encyclopedia/current`.
+3. Deploy situs baru ke `/var/www/ai-encyclopedia-site/current`.
 4. Uji lewat port atau subdomain sementara.
-5. Di blok nginx `ai.toyspedia.fun`, ganti `proxy_pass` ke Express dengan `root /var/www/ai-encyclopedia/current` dan `try_files $uri $uri/ $uri.html =404`. Pertahankan baris `listen` dan sertifikat TLS, lalu jalankan `nginx -t` dan reload.
+5. Di blok nginx `ai.toyspedia.fun`, ganti `proxy_pass` ke Express dengan `root /var/www/ai-encyclopedia-site/current` dan `try_files $uri $uri/ $uri.html =404`. Pertahankan baris `listen` dan sertifikat TLS, lalu jalankan `nginx -t` dan reload.
 6. Hentikan proses Express setelah situs baru terbukti berjalan.
 
 Rollback pergantian dilakukan dengan memulihkan konfigurasi nginx lama dan menyalakan kembali Express.

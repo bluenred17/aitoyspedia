@@ -16,7 +16,18 @@ test('category filter narrows the list', async ({ page }) => {
   await page.goto('/skills');
   await page.getByLabel('Kategori').selectOption('video');
   await expect(page.getByRole('heading', { name: 'Lemo-Opuscar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Claude-Mem' })).toBeHidden();
+  // Taste Skill dan Impeccable berkategori image, jadi harus tersembunyi saat memilih video.
+  await expect(page.getByRole('heading', { name: 'Taste Skill' })).toBeHidden();
+  await expect(page.getByRole('heading', { name: 'Impeccable' })).toBeHidden();
+});
+
+test('category filter shows a message when nothing matches, and resets', async ({ page }) => {
+  await page.goto('/skills');
+  await page.getByLabel('Kategori').selectOption('audio');
+  await expect(page.getByText('Tidak ada entri di kategori ini.')).toBeVisible();
+  await page.getByLabel('Kategori').selectOption('');
+  await expect(page.getByText('Tidak ada entri di kategori ini.')).toBeHidden();
+  await expect(page.getByRole('heading', { name: 'Taste Skill' })).toBeVisible();
 });
 
 test('category page lists its entries', async ({ page }) => {

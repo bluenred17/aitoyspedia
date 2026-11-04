@@ -1,8 +1,10 @@
-import { mapOutsideCode } from './code-segments';
+import { mapOutsideCode, markFenceLines } from './code-segments';
 
 const LINKED_IMAGE = /\[!\[[^\]]*\]\([^)]*\)\]\([^)]*\)/g;
 const BARE_BADGE = /!\[[^\]]*\]\([^)]*(?:shields\.io|badgen|badge)[^)]*\)/g;
 const TOC_TITLE = /^(?:table of contents|contents|toc|daftar isi)$/i;
+const LIST_ITEM = /^\s*(?:[-*+]|\d+[.)])\s/;
+const CONTINUATION = /^\s{2,}\S/;
 
 function isBadgeLine(line: string): boolean {
   if (line.trim() === '') return false;
@@ -10,34 +12,33 @@ function isBadgeLine(line: string): boolean {
   return rest !== line && rest.trim() === '';
 }
 
-/** Membuang baris badge dan bagian daftar isi. Isi blok kode dibiarkan. */
+/**
+ * Membuang baris badge dan bagian daftar isi. Isi blok kode dibiarkan.
+ * Daftar isi berakhir di baris pertama yang bukan item daftar, baris kosong, atau lanjutan item,
+ * sehingga bagian setelahnya (Install, peringatan) tidak ikut terbuang apa pun tingkat judulnya.
+ */
 export function cleanReadme(md: string): string {
+  const lines = md.split('\n');
+  const fenced = markFenceLines(lines);
   const out: string[] = [];
-  let inFence = false;
-  let skipLevel: number | null = null;
+  let skipping = false;
 
-  for (const line of md.split('\n')) {
-    if (/^\s*(?:```|~~~)/.test(line)) {
-      inFence = !inFence;
-      if (skipLevel === null) out.push(line);
-      continue;
+  lines.forEach((line, i) => {
+    if (skipping) {
+      if (line.trim() === '' || LIST_ITEM.test(line) || CONTINUATION.test(line)) return;
+      skipping = false;
     }
-    if (inFence) {
-      if (skipLevel === null) out.push(line);
-      continue;
+    if (fenced[i]) {
+      out.push(line);
+      return;
     }
     const heading = /^(#{1,6})\s+(.*)$/.exec(line);
-    if (heading) {
-      const level = heading[1].length;
-      if (skipLevel !== null && level <= skipLevel) skipLevel = null;
-      if (skipLevel === null && TOC_TITLE.test(heading[2].replace(/[*_`]/g, '').trim())) {
-        skipLevel = level;
-        continue;
-      }
+    if (heading && TOC_TITLE.test(heading[2].replace(/[*_`]/g, '').trim())) {
+      skipping = true;
+      return;
     }
-    if (skipLevel !== null || isBadgeLine(line)) continue;
-    out.push(line);
-  }
+    if (!isBadgeLine(line)) out.push(line);
+  });
 
   return mapOutsideCode(out.join('\n'), (t) => t.replace(/\n{3,}/g, '\n\n')).trim();
 }

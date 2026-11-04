@@ -5,7 +5,7 @@ import CopyButton from '../../components/CopyButton.astro';
 import EntryMeta from '../../components/EntryMeta.astro';
 import { getCategoryLabel } from '../../data/categories';
 import { getEntryType } from '../../data/entry-types';
-import { getCopyText } from '../../lib/copy-text';
+import { getCopyText, needsShellWarning } from '../../lib/copy-text';
 import { getAllEntries, type Entry } from '../../lib/entries';
 import { formatStars } from '../../lib/format';
 
@@ -47,8 +47,15 @@ const copyText = getCopyText(item.type, data as Record<string, unknown>);
       </div>
     )}
 
+    {needsShellWarning(copyText) && (
+      <p role="note" class="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+        <strong>Perhatian:</strong> perintah ini mengunduh skrip lalu langsung menjalankannya. Baca skripnya dulu
+        sebelum menyalin.
+      </p>
+    )}
+
     {copyText && (
-      <div class="mt-5 flex items-start justify-between gap-3 rounded-lg bg-gray-900 p-3 text-gray-50">
+      <div class={`${needsShellWarning(copyText) ? 'mt-2' : 'mt-5'} flex items-start justify-between gap-3 rounded-lg bg-gray-900 p-3 text-gray-50`}>
         <pre class="min-w-0 flex-1 overflow-x-auto whitespace-pre text-sm"><code>{copyText}</code></pre>
         <CopyButton text={copyText} label={type.copyLabel} />
       </div>
