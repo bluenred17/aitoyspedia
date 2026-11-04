@@ -1,13 +1,18 @@
 ---
 import { getCategoryLabel } from '../data/categories';
+import { getEntryType } from '../data/entry-types';
+import { getCopyText } from '../lib/copy-text';
 import { formatStars } from '../lib/format';
 import type { Entry } from '../lib/entries';
+import CopyButton from './CopyButton.astro';
 
 interface Props {
   entry: Entry;
 }
 const { entry } = Astro.props;
 const { data } = entry;
+const copyText = getCopyText(entry.type, data as Record<string, unknown>);
+const copyLabel = getEntryType(entry.type)?.copyLabel ?? 'Salin';
 ---
 
 <article
@@ -32,5 +37,6 @@ const { data } = entry;
   <p class="mt-1 flex-1 text-sm text-gray-600">{data.summary}</p>
   <div class="mt-3 flex items-center justify-between gap-2 text-xs text-gray-500">
     <span class="min-w-0 truncate">{data.repo ?? ''}</span>
+    {copyText && <CopyButton text={copyText} label={copyLabel} />}
   </div>
 </article>

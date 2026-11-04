@@ -1,0 +1,32 @@
+---
+import { SURFACE_LABELS } from '../data/surfaces';
+import type { Entry } from '../lib/entries';
+
+interface Props {
+  entry: Entry;
+}
+const { data } = Astro.props.entry;
+const date = (d: Date) =>
+  new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(d);
+const sourceUrl = 'source_url' in data && typeof data.source_url === 'string' ? data.source_url : null;
+const license = 'license' in data ? data.license : undefined;
+---
+
+<dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-xl border border-gray-200 bg-white p-4 text-sm">
+  {sourceUrl && (
+    <>
+      <dt class="text-gray-500">Sumber</dt>
+      <dd class="min-w-0 break-words"><a href={sourceUrl} class="text-indigo-600 hover:underline">Sumber asli</a></dd>
+    </>
+  )}
+  {license !== undefined && (
+    <>
+      <dt class="text-gray-500">Lisensi</dt>
+      <dd>{license ?? 'Tidak tercantum'}</dd>
+    </>
+  )}
+  <dt class="text-gray-500">Platform</dt>
+  <dd>{data.surfaces.map((s) => SURFACE_LABELS[s] ?? s).join(', ')}</dd>
+  <dt class="text-gray-500">Terakhir dicek</dt>
+  <dd>{date(data.last_verified)}</dd>
+</dl>
