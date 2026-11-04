@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import EntryCard from '../components/EntryCard.astro';
+import SearchBox from '../components/SearchBox.astro';
 import { CATEGORIES } from '../data/categories';
 import { ENTRY_TYPES } from '../data/entry-types';
 import { countByCategory, getAllEntries, getEntriesByType } from '../lib/entries';
@@ -23,6 +24,7 @@ const sections = await Promise.all(
     <p class="mt-2 max-w-2xl text-indigo-100">
       Kumpulan prompt, tools, skills, plugins, dan connectors untuk Claude, dikelompokkan per kategori.
     </p>
+    <SearchBox class="mt-5 max-w-2xl" />
   </section>
 
   <section class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Kategori">

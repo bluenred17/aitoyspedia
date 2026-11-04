@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import CategoryFilter from '../../components/CategoryFilter.astro';
 import EntryCard from '../../components/EntryCard.astro';
+import SearchBox from '../../components/SearchBox.astro';
 import { ENTRY_TYPES, type EntryType } from '../../data/entry-types';
 import { getEntriesByType } from '../../lib/entries';
 
@@ -15,6 +16,7 @@ const entries = await getEntriesByType(type.key);
 
 <Base title={type.label}>
   <h1 class="text-3xl font-bold">{type.label}</h1>
+  <SearchBox class="mt-4 max-w-2xl" />
   {entries.length === 0 ? (
     <p class="mt-4 text-gray-500">Belum ada {type.singular}.</p>
   ) : (
