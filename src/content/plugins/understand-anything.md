@@ -6,10 +6,10 @@ tags: [codebase, graf-pengetahuan, onboarding, dokumentasi]
 surfaces: [claude-code]
 source_url: "https://github.com/Egonex-AI/Understand-Anything/blob/main/README.md"
 repo: Egonex-AI/Understand-Anything
-stars: 90478
+stars: 90663
 license: MIT
 added: 2026-11-04
-last_verified: 2026-11-04
+last_verified: 2026-11-05
 status: aktif
 install: |
   /plugin marketplace add Egonex-AI/Understand-Anything
