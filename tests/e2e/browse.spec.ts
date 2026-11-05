@@ -7,10 +7,24 @@ test('home shows hero, categories and latest skills', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Skills Terbaru' })).toBeVisible();
 });
 
-test('empty sections show a message', async ({ page }) => {
-  await page.goto('/connectors');
-  await expect(page.getByText('Belum ada connector.')).toBeVisible();
-});
+// Tidak bergantung pada bagian mana yang kebetulan kosong: pesan harus tampil tepat ketika tidak ada kartu.
+const SECTIONS = [
+  ['prompts', 'prompt'],
+  ['tools', 'tool'],
+  ['skills', 'skill'],
+  ['plugins', 'plugin'],
+  ['connectors', 'connector'],
+] as const;
+
+for (const [path, singular] of SECTIONS) {
+  test(`/${path} shows the empty message exactly when it has no entries`, async ({ page }) => {
+    await page.goto(`/${path}`);
+    const cards = await page.locator('[data-entry-card]').count();
+    const message = page.getByText(`Belum ada ${singular}.`);
+    if (cards === 0) await expect(message).toBeVisible();
+    else await expect(message).toHaveCount(0);
+  });
+}
 
 test('category filter narrows the list', async ({ page }) => {
   await page.goto('/skills');
