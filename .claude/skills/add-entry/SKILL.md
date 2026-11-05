@@ -167,4 +167,6 @@ Laporan akhir ke pengelola, singkat:
 2. Hal yang perlu dicek pengelola: lisensi, perintah pasang, kategori, dan bagian yang dibuang.
 3. Hasil `npm run check`.
 
-**Jangan** menjalankan `git commit` atau `git push`. Pengelola yang memutuskan kapan entri tayang.
+Setelah `npm run check` lulus dan tidak ada hal di langkah 4 yang masih perlu ditanyakan, langsung
+`git add` entri, `git commit`, dan `git push origin main` tanpa menunggu konfirmasi (izin tetap pengelola).
+Push men-deploy otomatis. Jangan push bila `check` gagal. Sebutkan hash commit di laporan.
