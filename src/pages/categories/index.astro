@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import { CATEGORIES } from '../../data/categories';
+import { countByCategory, getAllEntries } from '../../lib/entries';
+
+const counts = countByCategory(await getAllEntries());
+---
+
+<Base title="Kategori">
+  <h1 class="text-3xl font-bold">Kategori</h1>
+  <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    {CATEGORIES.map((c) => (
+      <a
+        href={`/categories/${c.slug}/`}
+        class="rounded-xl border border-gray-200 bg-white px-3 py-3 text-center font-semibold hover:border-indigo-300"
+      >
+        {c.label}
+        <span class="block text-sm font-normal text-gray-500">{counts.get(c.slug) ?? 0} item</span>
+      </a>
+    ))}
+  </div>
+</Base>

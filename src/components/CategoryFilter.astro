@@ -1,0 +1,31 @@
+---
+import { CATEGORIES } from '../data/categories';
+---
+
+<div class="flex items-center gap-2">
+  <label for="category-filter" class="text-sm font-medium text-gray-700">Kategori</label>
+  <select
+    id="category-filter"
+    class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
+  >
+    <option value="">Semua kategori</option>
+    {CATEGORIES.map((c) => <option value={c.slug}>{c.label}</option>)}
+  </select>
+</div>
+<p id="filter-empty" class="mt-4 hidden text-gray-600">Tidak ada entri di kategori ini.</p>
+
+<script>
+  const select = document.querySelector<HTMLSelectElement>('#category-filter');
+  const empty = document.querySelector<HTMLElement>('#filter-empty');
+  const apply = () => {
+    const cards = document.querySelectorAll<HTMLElement>('[data-entry-card]');
+    let visible = 0;
+    cards.forEach((card) => {
+      const show = !select?.value || card.dataset.category === select.value;
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    empty?.classList.toggle('hidden', visible > 0 || cards.length === 0);
+  };
+  select?.addEventListener('change', apply);
+</script>

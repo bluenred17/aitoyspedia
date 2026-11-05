@@ -1,0 +1,47 @@
+---
+import { getCategoryLabel } from '../data/categories';
+import { getEntryType } from '../data/entry-types';
+import { getCopyText, needsShellWarning } from '../lib/copy-text';
+import { formatStars } from '../lib/format';
+import type { Entry } from '../lib/entries';
+import CopyButton from './CopyButton.astro';
+
+interface Props {
+  entry: Entry;
+}
+const { entry } = Astro.props;
+const { data } = entry;
+const copyText = getCopyText(entry.type, data as Record<string, unknown>);
+const copyLabel = getEntryType(entry.type)?.copyLabel ?? 'Salin';
+---
+
+<article
+  data-entry-card
+  data-category={data.category}
+  class="flex flex-col rounded-xl border border-gray-200 bg-white p-4"
+>
+  <div class="flex items-center justify-between gap-2">
+    <span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600">
+      {getCategoryLabel(data.category)}
+    </span>
+    {data.status === 'usang' && (
+      <span class="rounded-md bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">Usang</span>
+    )}
+  </div>
+  <h3 class="mt-2 flex flex-wrap items-baseline gap-x-2 text-lg font-semibold">
+    <a href={entry.url} class="break-words hover:text-indigo-600">{data.title}</a>
+    {typeof data.stars === 'number' && (
+      <span class="text-sm font-normal text-amber-600">★ {formatStars(data.stars)}</span>
+    )}
+  </h3>
+  <p class="mt-1 flex-1 text-sm text-gray-600">{data.summary}</p>
+  <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-500">
+    <span class="min-w-0 truncate">{data.repo ?? ''}</span>
+    {needsShellWarning(copyText) && (
+      <span class="font-medium text-amber-700" title="Perintah ini mengunduh skrip lalu langsung menjalankannya">
+        ⚠ Baca skripnya dulu
+      </span>
+    )}
+    {copyText && <CopyButton text={copyText} label={copyLabel} />}
+  </div>
+</article>

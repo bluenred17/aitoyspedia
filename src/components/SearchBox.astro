@@ -1,0 +1,30 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class={className}>
+  <label for="search-input" class="sr-only">Cari entri</label>
+  <input
+    id="search-input"
+    type="search"
+    autocomplete="off"
+    placeholder="Cari prompt, tool, skill, plugin, connector…"
+    class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400"
+  />
+  <div
+    id="search-results"
+    role="region"
+    aria-label="Hasil pencarian"
+    aria-live="polite"
+    hidden
+    class="mt-2 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white text-gray-900 shadow-sm"
+  >
+  </div>
+</div>
+
+<script>
+  import '../scripts/search';
+</script>

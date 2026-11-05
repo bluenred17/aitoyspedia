@@ -1,0 +1,51 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { ENTRY_TYPES } from '../data/entry-types';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title,
+  description = 'Ensiklopedia prompt, tools, skills, plugins, dan connectors untuk Claude.',
+} = Astro.props;
+const fullTitle = title ? `${title} · AI Encyclopedia` : 'AI Encyclopedia';
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+  </head>
+  <body class="min-h-screen bg-slate-50 font-sans text-gray-900 antialiased">
+    <header class="border-b border-gray-200 bg-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
+        <a href="/" class="mr-auto flex items-center gap-2 text-lg font-bold text-indigo-600">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">
+            <path d="M12 2 2 7l10 5 10-5-10-5Zm0 12.5L4.6 10.8 2 12.1l10 5 10-5-2.6-1.3L12 14.5Zm0 5L4.6 15.8 2 17.1l10 5 10-5-2.6-1.3L12 19.5Z" />
+          </svg>
+          AI Encyclopedia
+        </a>
+        <nav aria-label="Utama" class="flex flex-wrap gap-x-5 gap-y-1 text-sm text-gray-600">
+          {ENTRY_TYPES.map((t) => <a href={`/${t.key}/`} class="hover:text-indigo-600">{t.label}</a>)}
+          <a href="/categories/" class="hover:text-indigo-600">Kategori</a>
+        </nav>
+      </div>
+    </header>
+    <main class="mx-auto max-w-6xl px-4 py-8">
+      <slot />
+    </main>
+    <footer class="mx-auto max-w-6xl px-4 pb-10 text-xs text-gray-500">
+      Terjemahan README dari sumber aslinya. Periksa tanggal pengecekan sebelum memakai.
+    </footer>
+    <script>
+      import '../scripts/copy';
+    </script>
+  </body>
+</html>
