@@ -96,7 +96,7 @@ Nilai yang valid:
 
 - `category`: `audio`, `music-gen`, `voiceover`, `bisnis`, `coding`, `image`, `image-editing`,
   `text-to-image`, `marketing`, `seo`, `productivity`, `video`, `image-to-video`, `text-to-video`,
-  `writing`, `copywriting`
+  `writing`, `copywriting`, `keamanan`
 - `surfaces` (minimal satu): `claude-ai`, `claude-code`, `desktop`, `api`
 - `status`: `aktif` atau `usang`
 - `auth` (connector): `oauth`, `api-key`, `none`, `lainnya`

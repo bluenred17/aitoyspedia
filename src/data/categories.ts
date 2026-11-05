@@ -15,6 +15,7 @@ export const CATEGORIES = [
   { slug: 'text-to-video', label: 'Text to Video' },
   { slug: 'writing', label: 'Writing' },
   { slug: 'copywriting', label: 'Copywriting' },
+  { slug: 'keamanan', label: 'Keamanan' },
 ] as const;
 
 export const CATEGORY_SLUGS = CATEGORIES.map((c) => c.slug) as [
