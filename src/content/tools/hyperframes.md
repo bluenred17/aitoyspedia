@@ -6,10 +6,10 @@ tags: [video, html, render, agent, skills]
 surfaces: [claude-code]
 source_url: "https://github.com/heygen-com/hyperframes/blob/main/README.md"
 repo: heygen-com/hyperframes
-stars: 78725
+stars: 79035
 license: Apache-2.0
 added: 2026-11-04
-last_verified: 2026-11-04
+last_verified: 2026-11-05
 status: aktif
 setup: |
   claude plugin marketplace add heygen-com/hyperframes
@@ -205,6 +205,44 @@ HyperFrames terinspirasi oleh [Remotion](https://www.remotion.dev). Keduanya mer
 
 Baca perbandingan lengkapnya di [panduan HyperFrames vs Remotion](https://hyperframes.heygen.com/guides/hyperframes-vs-remotion).
 
+## Paket plugin
+
+Plugin membundel katalog skill lengkap dan memakai pengelola pembaruan agent-nya. `bun run package:agent-plugin` membangun ZIP portabel yang di-commit, metadata sumber, dan checksum SHA-256. Lihat [daftar periksa maintainer](https://github.com/heygen-com/hyperframes/blob/main/docs/contributing/agent-plugins.mdx).
+
+## Unggah ke Codex
+
+Bangun arsip plugin Codex yang siap diunggah dari versi `HEAD` yang di-commit untuk manifest, aset brand, dan skill:
+
+```bash
+bun run package:codex-plugin
+```
+
+Perintah ini menulis `dist/hyperframes-plugin.zip` dengan folder akar `hyperframes/` dan gagal bila arsip melebihi batas unggah Codex sebesar 100 MB.
+
+## Catatan pengembangan (Git LFS)
+
+Repo memakai [Git LFS](https://git-lfs.com) untuk baseline regresi golden di bawah `packages/producer/tests/**/output.mp4` (sekitar 240 MB file `.mp4`). Kalau kamu meng-clone repo penuh untuk pengembangan, pasang Git LFS dulu:
+
+```bash
+# macOS
+brew install git-lfs
+
+# Ubuntu / Debian
+sudo apt install git-lfs
+
+# Windows
+winget install GitHub.GitLFS
+
+# Then, once per machine
+git lfs install
+```
+
+Kalau kamu hanya butuh file sumber, kamu bisa melewati konten LFS:
+
+```bash
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/heygen-com/hyperframes.git
+```
+
 ## Dokumentasi dan paket
 
 Dokumentasi lengkap: [hyperframes.heygen.com/introduction](https://hyperframes.heygen.com/introduction), termasuk [Quickstart](https://hyperframes.heygen.com/quickstart), [panduan](https://hyperframes.heygen.com/guides/gsap-animation), [referensi API](https://hyperframes.heygen.com/packages/core), [contoh](https://hyperframes.heygen.com/examples), dan [render AWS Lambda](https://hyperframes.heygen.com/deploy/aws-lambda).
@@ -217,4 +255,4 @@ HyperFrames dipakai dalam produksi di [HeyGen](https://www.heygen.com). Laporan 
 
 [Apache 2.0](https://github.com/heygen-com/hyperframes/blob/main/LICENSE)
 
-> Catatan: ringkasan dan terjemahan ini membuang galeri template frame.md, panduan paket plugin untuk maintainer, catatan Git LFS untuk pengembang, dan bagian komunitas. Lihat README asli untuk semuanya.
+> Catatan: ringkasan dan terjemahan ini membuang galeri template frame.md dan bagian komunitas. Lihat README asli untuk semuanya.
