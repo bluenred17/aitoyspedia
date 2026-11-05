@@ -77,7 +77,9 @@ Aturan terjemahan:
   `<details>` menjadi judul dan isi biasa). File tetap `.md`, **bukan MDX**.
 - Boleh membuang bagian yang tidak berguna bagi pemakai situs: sponsor, daftar kontributor, riwayat bintang,
   tautan terjemahan bahasa lain, dan changelog panjang. **Jangan membuang** instalasi, cara pakai,
-  konfigurasi, peringatan, dan lisensi. Sebutkan bagian yang dibuang di laporan akhir.
+  konfigurasi, peringatan, dan lisensi. **Bagian cara pasang disalin utuh**, termasuk cara pasang untuk
+  agent atau harness lain (Codex, Cursor, Gemini CLI, dan seterusnya) dan semua varian OS. Jangan
+  meringkasnya atau memangkasnya hanya karena situs ini berfokus pada Claude. Sebutkan bagian yang dibuang di laporan akhir.
 - Jangan menambah klaim yang tidak ada di README.
 
 Aturan file:

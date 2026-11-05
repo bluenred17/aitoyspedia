@@ -38,7 +38,50 @@ claude plugin install mattpocock-skills@claude-plugins-official
 
 Memperbarui dirinya sendiri secara default.
 
-README juga memuat cara pasang untuk Codex, GitHub Copilot (CLI dan VS Code), Gemini CLI, dan agent lain (`npx skills@latest add mattpocock/skills -a <agent>`). Bagian itu tidak diterjemahkan di sini karena situs ini berfokus pada Claude. Lihat [README aslinya](https://github.com/mattpocock/skills/blob/main/README.md).
+**Codex**
+
+```bash
+codex plugin marketplace add mattpocock/skills
+codex plugin add mattpocock-skills@mattpocock
+```
+
+Memperbarui dirinya sendiri saat startup.
+
+**GitHub Copilot** (CLI dan VS Code)
+
+```bash
+copilot plugin marketplace add mattpocock/skills
+copilot plugin install mattpocock-skills@mattpocock
+```
+
+Lalu, sekali saja, tambahkan ke `~/.copilot/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "mattpocock": { "source": { "source": "github", "repo": "mattpocock/skills" }, "autoUpdate": true }
+  }
+}
+```
+
+Di VS Code, jalankan **Chat: Install Plugin From Source** dan masukkan `https://github.com/mattpocock/skills`. Diperbarui setiap hari.
+
+**Gemini CLI** (pembaruan manual)
+
+```bash
+gemini skills install https://github.com/mattpocock/skills.git --path skills/engineering
+gemini skills install https://github.com/mattpocock/skills.git --path skills/productivity
+```
+
+Jalankan ulang kedua perintah itu untuk memperbarui.
+
+**Agent lain, atau file yang bisa diedit** (pembaruan manual)
+
+```bash
+npx skills@latest add mattpocock/skills -a <agent>  # cursor, opencode, devin, windsurf, amp, pi; omit -a to choose
+```
+
+Saat installer menanyakan skill mana yang diambil, sertakan `setup-matt-pocock-skills`. Untuk memperbarui, jalankan `npx skills@latest update`, dan jalankan ulang `add` untuk mengambil skill baru.
 
 ### 2. Jalankan `/setup-matt-pocock-skills`
 

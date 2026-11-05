@@ -62,7 +62,228 @@ Marketplace Superpowers menyediakan Superpowers dan beberapa plugin terkait lain
   /plugin install superpowers@superpowers-marketplace
   ```
 
-README juga memuat cara pasang untuk harness lain (Codex, Cursor, Gemini CLI, OpenCode, dan seterusnya). Bagian itu tidak diterjemahkan di sini karena situs ini berfokus pada Claude. Lihat [README aslinya](https://github.com/obra/superpowers/blob/main/README.md).
+Cara pasang berbeda-beda per harness. Kalau kamu memakai lebih dari satu, pasang Superpowers secara terpisah untuk masing-masing.
+
+### Antigravity
+
+Pasang Superpowers sebagai plugin dari repositori ini:
+
+```bash
+agy plugin install https://github.com/obra/superpowers
+```
+
+Antigravity menampilkan deskripsi setiap skill yang terpasang, dan deskripsi skill `using-superpowers` mendorong model memuat skill itu di awal percakapan. Pasang ulang dengan perintah yang sama untuk memperbarui.
+
+### Codex App
+
+Superpowers tersedia lewat [marketplace plugin Codex resmi](https://github.com/openai/plugins).
+
+- Di aplikasi Codex, klik Plugins di sidebar.
+- Kamu akan melihat `Superpowers` di bagian Coding.
+- Klik `+` di sebelah Superpowers dan ikuti petunjuknya.
+
+### Codex CLI
+
+Superpowers tersedia lewat [marketplace plugin Codex resmi](https://github.com/openai/plugins).
+
+- Buka antarmuka pencarian plugin:
+
+  ```bash
+  /plugins
+  ```
+
+- Cari Superpowers:
+
+  ```bash
+  superpowers
+  ```
+
+- Pilih `Install Plugin`.
+
+### Cursor
+
+- Di chat Cursor Agent, pasang dari marketplace:
+
+  ```text
+  /add-plugin superpowers
+  ```
+
+- Atau cari "superpowers" di marketplace plugin.
+
+### Devin CLI
+
+- Pasang plugin dari repositori ini:
+
+  ```bash
+  devin plugins install obra/superpowers
+  ```
+
+- Perbarui ke versi terbaru dengan:
+
+  ```bash
+  devin plugins update superpowers
+  ```
+
+### Factory Droid
+
+- Daftarkan marketplace-nya:
+
+  ```bash
+  droid plugin marketplace add https://github.com/obra/superpowers
+  ```
+
+- Pasang plugin-nya:
+
+  ```bash
+  droid plugin install superpowers@superpowers
+  ```
+
+### Gemini CLI
+
+- Pasang ekstensinya:
+
+  ```bash
+  gemini extensions install https://github.com/obra/superpowers
+  ```
+
+- Perbarui kemudian:
+
+  ```bash
+  gemini extensions update superpowers
+  ```
+
+### GitHub Copilot CLI
+
+- Daftarkan marketplace-nya:
+
+  ```bash
+  copilot plugin marketplace add obra/superpowers-marketplace
+  ```
+
+- Pasang plugin-nya:
+
+  ```bash
+  copilot plugin install superpowers@superpowers-marketplace
+  ```
+
+### Grok Build CLI
+
+Superpowers tersedia lewat [marketplace plugin Grok resmi](https://github.com/xai-org/plugin-marketplace).
+
+- Pasang plugin dari marketplace resmi xAI:
+
+  ```bash
+  grok plugin install superpowers@xai-official --trust
+  ```
+
+- Atau buka marketplace di TUI, cari Superpowers, lalu pasang:
+
+  ```text
+  /marketplace
+  ```
+
+### Kimi Code
+
+Superpowers tersedia di marketplace plugin Kimi Code.
+
+- Buka pengelola plugin Kimi Code:
+
+  ```text
+  /plugins
+  ```
+
+- Masuk ke `Marketplace` > `Superpowers` lalu pasang.
+
+- Atau pasang langsung dari repositori ini:
+
+  ```text
+  /plugins install https://github.com/obra/superpowers
+  ```
+
+- Dokumentasi rinci: [docs/README.kimi.md](https://github.com/obra/superpowers/blob/main/docs/README.kimi.md)
+
+### OpenCode
+
+OpenCode memakai pemasangan plugin sendiri. Pasang Superpowers secara terpisah walaupun kamu sudah memakainya di harness lain.
+
+- Katakan kepada OpenCode:
+
+  ```
+  Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md
+  ```
+
+  Perhatikan bahwa cara ini membuat agent mengambil lalu mengikuti instruksi dari sebuah URL jarak jauh. Bacalah isi file itu dulu sebelum menjalankannya.
+
+- Dokumentasi rinci: [docs/README.opencode.md](https://github.com/obra/superpowers/blob/main/docs/README.opencode.md)
+
+### Pi
+
+Pasang Superpowers sebagai paket Pi dari repositori ini:
+
+```bash
+pi install git:github.com/obra/superpowers
+```
+
+Untuk pengembangan lokal, jalankan Pi dengan checkout ini dimuat sebagai paket sementara:
+
+```bash
+pi -e /path/to/superpowers
+```
+
+Paket Pi memuat skill Superpowers dan ekstensi kecil yang menyuntikkan bootstrap `using-superpowers` saat sesi dimulai dan sekali lagi setelah kompaksi. Pi punya skill native, sehingga tidak perlu tool `Skill` kompatibilitas. Tool subagent dan daftar tugas tetap berupa paket pendamping Pi yang opsional.
+
+### Qwen Code
+
+Qwen Code memasang plugin langsung dari marketplace Claude Code.
+
+- Pasang plugin dari repositori ini, dan pilih `superpowers` saat diminta:
+
+  ```bash
+  qwen extensions install obra/superpowers
+  ```
+
+- Perbarui kemudian:
+
+  ```bash
+  qwen extensions update superpowers
+  ```
+
+### Hermes Agent
+
+Pasang Superpowers sebagai plugin Hermes dari repositori ini:
+
+```bash
+hermes plugins install obra/superpowers --enable
+```
+
+Mulai ulang sesi Hermes yang aktif setelah memasang. Catatan: Hermes tidak punya hook pasca-kompaksi, jadi sesi yang sangat panjang dan terkompaksi melewati giliran pertamanya akan kehilangan bootstrap. Mulai sesi baru bila skill berhenti terpicu.
+
+### Muse
+
+Superpowers tersedia sebagai plugin Muse native: repositori sama, skill sama, semua harness. Bootstrap `using-superpowers` disuntikkan lewat hook `SessionStart` native, seperti pada Claude Code, Codex, Cursor, Gemini, Pi, dan lainnya, tanpa opt-in per sesi.
+
+- Pasang dari checkout lokal:
+
+  ```bash
+  muse plugins install ./
+  muse plugins approve superpowers
+  ```
+
+  Atau clone lalu pasang:
+
+  ```bash
+  git clone https://github.com/obra/superpowers.git
+  muse plugins install ./superpowers
+  muse plugins approve superpowers
+  ```
+
+- Perbarui kemudian:
+
+  ```bash
+  muse plugins update superpowers
+  ```
+
+Mulai ulang sesi Muse yang aktif setelah memasang agar hook `SessionStart` berlaku. Skill langsung aktif, sedangkan hook membutuhkan persetujuan pada pemasangan pertama. Untuk memverifikasi, mulai sesi baru dan kirim `Let's make a react todo list`; pemasangan yang berfungsi akan memicu `brainstorming` otomatis sebelum kode apa pun ditulis. Versi dilacak di `.version-bump.json` sehingga `scripts/bump-version.sh` menjaganya tetap sinkron.
 
 ## Alur kerja dasar
 
